@@ -1,7 +1,7 @@
 {
   "name": "GentleForm",
   "version": "0.0.0",
-  "description": "...",
+  "description": "Validate a form at the right time, using browser's native api.",
   "author": "Gabin Aureche",
   "license": "MIT",
   "devDependencies": {
