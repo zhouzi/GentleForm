@@ -15,22 +15,22 @@ export default class GentleForm {
 
                 let isDirty = $target.getState('dirty');
 
-                $target.concat(self.$form).setState('touched', true);
+                $target.concat(self.$form).setState('touched', true, self.$form);
 
-                if (isDirty) $target.setState('interacted', true);
+                if (isDirty) $target.setState('interacted', true, self.$form);
 
                 self.validate($target);
             })
             .on('input', event => {
                 let $target = $(event.target);
-                $target.concat(self.$form).setState('dirty', true);
+                $target.concat(self.$form).setState('dirty', true, self.$form);
 
                 self.validate($target);
             })
             .on('submit', event => {
                 event.preventDefault();
 
-                self.$form.setState('submitted', true);
+                self.$form.setState('submitted', true, self.$form);
 
                 let data = {};
                 for (let i = 0, form = self.$form.get(0), len = form.length, $e, name; i < len; i++) {
@@ -38,7 +38,7 @@ export default class GentleForm {
 
                     if (!isFormInput($e)) continue;
 
-                    $e.setState('submitted', true);
+                    $e.setState('submitted', true, self.$form);
                     self.validate($e);
 
                     name = $e.getAttr('name');
@@ -54,6 +54,8 @@ export default class GentleForm {
     }
 
     validate ($elements, validateForm = false) {
+        let self = this;
+
         $elements.each(element => {
             let $element = $(element);
             let tag = $element.get(0).tagName.toLowerCase();
@@ -61,8 +63,8 @@ export default class GentleForm {
             if (tag == 'form' && !$element.getState('submitted')) return;
             if (!$element.getState('interacted') && !$element.getState('submitted')) return;
 
-            if ($element.isValid()) $element.setState('invalid', false);
-            else if (tag != 'form' || validateForm) $element.setState('invalid', true);
+            if ($element.isValid()) $element.setState('invalid', false, self.$form);
+            else if (tag != 'form' || validateForm) $element.setState('invalid', true, self.$form);
 
             let errors = $element.getErrors();
             let $errorMessages = $(`[data-gentle-errors-for="${$element.getAttr('name')}"]`, this.$form);

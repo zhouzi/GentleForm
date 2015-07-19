@@ -1,10 +1,10 @@
 class $ {
-    constructor (selector, parent) {
+    constructor (selector, parent = document) {
         if (selector instanceof $) {
             this.elements = selector.get();
         } else if (typeof selector == 'string') {
             if (parent instanceof $) parent = parent.get(0);
-            this.elements = [].slice.call((parent || document).querySelectorAll(selector));
+            this.elements = [].slice.call(parent.querySelectorAll(selector));
         } else if (selector instanceof Array) {
             this.elements = selector;
         } else {
@@ -66,7 +66,7 @@ class $ {
         return this;
     }
 
-    setState (stateName, stateValue) {
+    setState (stateName, stateValue, parentForm = document) {
         if (stateValue === undefined) throw('No stateValue passed to $.setState()');
 
         this.each(element => {
@@ -75,7 +75,7 @@ class $ {
         });
 
         let className = 'gentle-state-' + stateName;
-        let $reflectors = new $(`[data-gentle-state-for="${this.getAttr('name')}"]`, this.get(0));
+        let $reflectors = new $(`[data-gentle-state-for="${this.getAttr('name')}"]`, parentForm);
 
         if (stateValue) {
             this.addClass(className);
