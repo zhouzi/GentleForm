@@ -93,6 +93,7 @@ class $ {
     }
 
     isValid () {
+        console.log(this.get(0));
         return this.get(0).checkValidity();
     }
 
