@@ -4,16 +4,16 @@ import isFormInput from './isFormInput';
 export default class GentleForm {
     constructor (selector, onSubmit) {
         let self = this;
-        self.$form = new $(selector);
+        self.$form = $(selector);
         self.onSubmit = typeof onSubmit == 'function' ? onSubmit : () => {};
 
         self.$form
             .on('blur', event => {
-                var $target = new $(event.target);
+                let $target = $(event.target);
 
                 if (!isFormInput($target)) return;
 
-                var isDirty = $target.getState('dirty');
+                let isDirty = $target.getState('dirty');
 
                 $target.concat(self.$form).setState('touched', true);
 
@@ -22,7 +22,7 @@ export default class GentleForm {
                 self.validate($target);
             })
             .on('input', event => {
-                var $target = new $(event.target);
+                let $target = $(event.target);
                 $target.concat(self.$form).setState('dirty', true);
 
                 self.validate($target);
@@ -34,7 +34,7 @@ export default class GentleForm {
 
                 let data = {};
                 for (let i = 0, form = self.$form.get(0), len = form.length, $e, name; i < len; i++) {
-                    $e = new $(form[i]);
+                    $e = $(form[i]);
 
                     if (!isFormInput($e)) continue;
 
@@ -45,7 +45,7 @@ export default class GentleForm {
                     data[name] = { errors: $e.getErrors(), value: $e.getValue() };
                 }
 
-                self.validate(self.$form);
+                self.validate(self.$form, true);
                 self.onSubmit(event, self.$form.isValid(), data);
             })
         ;
@@ -53,26 +53,31 @@ export default class GentleForm {
         $('[data-gentle-error-when]', self.$form).hide();
     }
 
-    validate ($elements) {
+    validate ($elements, validateForm = false) {
         $elements.each(element => {
-            let $element = new $(element);
+            let $element = $(element);
+            let tag = $element.get(0).tagName.toLowerCase();
 
+            if (tag == 'form' && !$element.getState('submitted')) return;
             if (!$element.getState('interacted') && !$element.getState('submitted')) return;
 
             if ($element.isValid()) $element.setState('invalid', false);
-            else $element.setState('invalid', true);
+            else if (tag != 'form' || validateForm) $element.setState('invalid', true);
 
-            var errors = $element.getErrors();
-            var $errorMessages = new $(`[data-gentle-errors-for="${$element.getAttr('name')}"]`, this.$form);
+            let errors = $element.getErrors();
+            let $errorMessages = $(`[data-gentle-errors-for="${$element.getAttr('name')}"]`, this.$form);
             let $children;
 
             $errorMessages.each(element => {
                 for (let errorKey in errors) {
                     if (!errors.hasOwnProperty(errorKey)) continue;
-                    $children = new $(`[data-gentle-error-when="${errorKey}"`, element);
+                    $children = $(`[data-gentle-error-when="${errorKey}"`, element);
 
-                    if (errors[errorKey]) $children.show();
-                    else $children.hide();
+                    if (errors[errorKey]) {
+                        if (tag != 'form' || validateForm) $children.show();
+                    } else {
+                        $children.hide();
+                    }
                 }
             });
         });

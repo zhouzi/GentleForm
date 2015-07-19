@@ -74,7 +74,7 @@ class $ {
             element.gentleState[stateName] = stateValue;
         });
 
-        var className = 'gentle-state-' + stateName;
+        let className = 'gentle-state-' + stateName;
         this.concat(`[data-gentle-state-for="${this.getAttr('name')}"]`);
 
         if (stateValue) this.addClass(className);
@@ -84,7 +84,7 @@ class $ {
     }
 
     getState (stateName) {
-        var element = this.get(0);
+        let element = this.get(0);
         return element.gentleState ? element.gentleState[stateName] : null;
     }
 
@@ -111,6 +111,6 @@ class $ {
     }
 }
 
-export default function (selector, parent) {
+export default (selector, parent) => {
     return new $(selector, parent);
 };
