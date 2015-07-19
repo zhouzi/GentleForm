@@ -75,10 +75,15 @@ class $ {
         });
 
         let className = 'gentle-state-' + stateName;
-        this.concat(`[data-gentle-state-for="${this.getAttr('name')}"]`);
+        let $reflectors = new $(`[data-gentle-state-for="${this.getAttr('name')}"]`, this.get(0));
 
-        if (stateValue) this.addClass(className);
-        else this.removeClass(className);
+        if (stateValue) {
+            this.addClass(className);
+            $reflectors.addClass(className);
+        } else {
+            this.removeClass(className);
+            $reflectors.removeClass(className);
+        }
 
         return this;
     }
@@ -93,7 +98,6 @@ class $ {
     }
 
     isValid () {
-        console.log(this.get(0));
         return this.get(0).checkValidity();
     }
 
