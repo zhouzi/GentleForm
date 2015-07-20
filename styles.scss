@@ -1,0 +1,96 @@
+/*----------------------------------------*\
+  functions
+\*----------------------------------------*/
+
+@function pow ($x, $n) {
+  $ret: 1;
+
+  @if $n >= 0 {
+    @for $i from 0 to $n {
+      $ret: $ret * $x;
+    }
+  } @else {
+    @for $i from $n to 0 {
+      $ret: $ret / $x;
+    }
+  }
+
+  @return $ret;
+}
+
+@function ms ($n, $base: $ms-base, $ratio: $ms-ratio) {
+  @return pow($ratio, $n) * $base;
+}
+
+
+
+/*----------------------------------------*\
+  variables
+\*----------------------------------------*/
+
+$font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+$font-weight-base: 300;
+$font-weight-bold: 700;
+$font-size-root: 18px;
+
+$ms-ratio: 1.6;
+$ms-base: 1rem;
+
+$color-primary: #31d47d;
+
+$text-color: #002c3c;
+$background-color: #f4fcff;
+
+
+
+/*----------------------------------------*\
+  styles
+\*----------------------------------------*/
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: $font-size-root;
+}
+
+body {
+  font-family: $font-family;
+  font-size: ms(0);
+  line-height: 1.4;
+  font-weight: $font-weight-base;
+  color: $text-color;
+  background-color: $background-color;
+}
+
+.wrapper {
+  max-width: 600px;
+  margin: auto;
+  padding-top: 2rem;
+}
+
+h1 {
+  font-size: ms(3);
+  line-height: 1;
+  font-weight: $font-weight-bold;
+  margin: 0 0 1rem 0;
+}
+
+a {
+  font-weight: 700;
+  color: $color-primary;
+
+  &:focus,
+  &:hover {
+    color: darken($color-primary, 10%);
+  }
+}
