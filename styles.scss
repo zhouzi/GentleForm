@@ -73,24 +73,45 @@ body {
 }
 
 .wrapper {
-  max-width: 600px;
+  max-width: 700px;
   margin: auto;
   padding-top: 2rem;
 }
 
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  font-weight: $font-weight-bold;
+  margin: 0 0 .6rem 0;
+}
+
 h1 {
   font-size: ms(3);
-  line-height: 1;
-  font-weight: $font-weight-bold;
-  margin: 0 0 1rem 0;
+}
+
+h2 {
+  font-size: ms(2);
+}
+
+h3 {
+  font-size: ms(1);
 }
 
 a {
-  font-weight: 700;
   color: $color-primary;
 
   &:focus,
   &:hover {
     color: darken($color-primary, 10%);
   }
+}
+
+p,
+ul {
+  margin: 0 0 1.6rem 0;
+}
+
+ul {
+  padding: 0 0 0 2rem;
 }

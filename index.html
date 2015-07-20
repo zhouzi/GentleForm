@@ -12,7 +12,30 @@
 
     <body>
         <main class="wrapper"><h1 id="gentleform">GentleForm</h1>
-<p>A proper introduction to GentleForm is coming soon but you can still have a look at what it&#39;s able to do in this <a href="http://codepen.io/Zhouzi/full/QbBzZp/">Codepen demo</a>.</p>
+<p>Validate forms at the right time, using browser&#39;s native api.</p>
+<ul>
+<li><a href="http://codepen.io/Zhouzi/full/QbBzZp/">Codepen Demo</a></li>
+<li><a href="http://github.com/Zhouzi/GentleForm/">GitHub Repository</a></li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>GentleForm is actually so simple that calling it a library seems awkward.
+It&#39;s rather a snippet, focused on validating forms thanks to html5 attributes and browser&#39;s native api.
+In fact, its real purpose is to validate inputs at <strong>the right time</strong> - when it makes sense from an user perspective.</p>
+<h2 id="but-what-s-the-right-time-">But what&#39;s the right time?</h2>
+<p>For now, GentleForm assumes the right time to be...</p>
+<h3 id="when-the-user-interacted-with-the-input">When the user interacted with the input</h3>
+<p>This one is pretty obvious: an input should be validated when the user interacted with it, not before.
+It means that, when the page loads and the form appears, there&#39;s no error messages displayed nor &quot;redish&quot; inputs.</p>
+<p>What&#39;s trickier to define is what &quot;interacted with&quot; means.</p>
+<p>GentleForm considers that the user interacted with an input when he focused it, typed something and then clicked away (blurred the input).
+And this is when the validation happens.
+So, considering an email input: the user click in, type his email address and then click away.
+If there&#39;s an error, this is when the error feedback are displayed.</p>
+<p>Why not validating it before, e.g when he&#39;s typing?
+Real time validation is some damn cool, isn&#39;t it?
+Nope, it&#39;s not - or maybe it is but not for users.
+It&#39;s like saying to someone that he failed even before he&#39;s done trying and that&#39;s definitely not cool.</p>
+<p><em>More details coming soon...</em></p>
 </main>
 
         <script>

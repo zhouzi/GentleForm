@@ -45,6 +45,7 @@ gulp.task('scripts', function () {
 gulp.task('watch', ['default'], function () {
     gulp.watch('src/*.js', ['scripts']);
     gulp.watch('*.scss', ['styles']);
+    gulp.watch('README.md', ['doc']);
 });
 
 gulp.task('doc', function (done) {

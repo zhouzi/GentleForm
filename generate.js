@@ -8,9 +8,12 @@ module.exports = function generate (doneCallback) {
         fs.readFile('index.html', 'utf8', function (err, htmlContent) {
             if (err) throw err;
 
-            fs.writeFile('index.html', htmlContent.replace(/(<main[^>]+>)[\s.]*(<\/main>)/g, function ($0, $1, $2) {
+            var htmlDoc = htmlContent.replace(/(<main[^>]+>)[^]+(<\/main>)/g, function ($0, $1, $2) {
                 return $1 + marked(readmeContent) + $2;
-            }));
+            });
+
+            fs.writeFile('index.html', htmlDoc);
+            doneCallback();
         });
     });
 };
