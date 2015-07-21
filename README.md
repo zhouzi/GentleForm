@@ -28,8 +28,8 @@ So, considering an email input: the user click in, type his email address and th
 If there's an error, this is when the error feedback are displayed.
 
 Why not validating it before, e.g when he's typing?
-Real time validation is some damn cool, isn't it?
-Nope, it's not - or maybe it is but not for users.
+Real time validation is so damn cool, isn't it?
+Maybe it is, but certainly not for users.
 It's like saying to someone that he failed even before he's done trying and that's definitely not cool.
 
 *More details coming soon...*
