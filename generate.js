@@ -8,7 +8,7 @@ module.exports = function generate (doneCallback) {
         fs.readFile('index.html', 'utf8', function (err, htmlContent) {
             if (err) throw err;
 
-            var htmlDoc = htmlContent.replace(/(<main[^>]+>)[^]+(<\/main>)/g, function ($0, $1, $2) {
+            var htmlDoc = htmlContent.replace(/(<section[^>]*>)[^]*(<\/section>)/g, function ($0, $1, $2) {
                 return $1 + marked(readmeContent) + $2;
             });
 
