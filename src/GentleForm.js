@@ -63,8 +63,8 @@ export default class GentleForm {
             if (tag == 'form' && !$element.getState('submitted')) return;
             if (!$element.getState('interacted') && !$element.getState('submitted')) return;
 
-            if ($element.isValid()) $element.setState('invalid', false, self.$form);
-            else if (tag != 'form' || validateForm) $element.setState('invalid', true, self.$form);
+            if ($element.isValid()) $element.setState('invalid', false, self.$form).setState('valid', true, self.$form);
+            else if (tag != 'form' || validateForm) $element.setState('invalid', true, self.$form).setState('valid', false, self.$form);
 
             let errors = $element.getErrors();
             let $errorMessages = $(`[data-gentle-errors-for="${$element.getAttr('name')}"]`, this.$form);
