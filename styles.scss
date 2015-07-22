@@ -118,10 +118,32 @@ a {
 }
 
 p,
-ul {
+ul,
+table {
   margin: 0 0 2rem 0;
 }
 
 ul {
   padding: 0 0 0 2rem;
+}
+
+table {
+  width: 100%;
+  border: 1px solid #eee;
+  background-color: #fff;
+
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    padding: .4rem .6rem;
+  }
+
+  th {
+    border-bottom: 1px solid #eee;
+  }
+
+  tr:nth-child(even) {
+    background-color: #eee;
+  }
 }
