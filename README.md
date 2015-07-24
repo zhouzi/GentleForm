@@ -3,13 +3,13 @@
 Validate forms at the right time, using browser's native api.
 
 * [Demo on CodePen](http://codepen.io/Zhouzi/full/QbBzZp/)
-* *Introduction*
-* [Usage]()
-* [Documentation](https://github.com/Zhouzi/GentleForm)
+* *Introduction (Coming soon...)*
+* [Usage](https://github.com/Zhouzi/GentleForm#usage)
+* [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
 
 ## Usage
 
-1. [Download GentleForm]()
+1. [Download GentleForm](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.min.js)
 2. Include it: `<script src="path/to/GentleForm.min.js"></script>`
 3. Add the required styles: `.gentle-hide { display: none !important; }`
 4. You are now able to create a new instance: `new GentleForm('form', function onSubmit (event, isValid, data) {})`
@@ -45,9 +45,9 @@ GentleForm accepts two arguments: the first one is a selector string or a DOM el
 
 ## Documentation
 
-* [States And Styles]()
-* [HTML Attributes]()
-* [Handling Submission]()
+* [States And Styles](https://github.com/Zhouzi/GentleForm#states-and-styles)
+* [HTML Attributes](https://github.com/Zhouzi/GentleForm#html-attributes)
+* [Handling Submission](https://github.com/Zhouzi/GentleForm#handling-submission)
 
 ### States And Styles
 
