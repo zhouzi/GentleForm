@@ -3,57 +3,161 @@
 Validate forms at the right time, using browser's native api.
 
 * [Demo on CodePen](http://codepen.io/Zhouzi/full/QbBzZp/)
-* [GitHub Repository](http://github.com/Zhouzi/GentleForm/)
-* [Introduction](http://gabinaureche.com/GentleForm)
-* [Documentation](https://github.com/Zhouzi/GentleForm/wiki)
-* [Tweet!](https://twitter.com/home?status=GentleForm%20-%20Validate%20forms%20at%20the%20right%20time%2C%20using%20browser%27s%20native%20api%20http%3A%2F%2Fcodepen.io%2FZhouzi%2Ffull%2FQbBzZp%2F%20via%20%40zh0uzi)
+* *Introduction*
+* [Usage]()
+* [Documentation](https://github.com/Zhouzi/GentleForm)
 
-## Introduction
+## Usage
 
-GentleForm is actually so simple that calling it a library seems awkward.
-It's rather a snippet, focused on validating forms thanks to html5 attributes and browser's native api.
-In fact, its real purpose is to validate inputs at **the right time**, when it makes sense from an user perspective.
+1. [Download GentleForm]()
+2. Include it: `<script src="path/to/GentleForm.min.js"></script>`
+3. Add the required styles: `.gentle-hide { display: none !important; }`
+4. You are now able to create a new instance: `new GentleForm('form', function onSubmit (event, isValid, data) {})`
 
-## But what's the right time?
+GentleForm accepts two arguments: the first one is a selector string or a DOM element, the second one is a function to call on form submission.
 
-For now, GentleForm assumes the right time to be...
+**Basic example:**
 
-### When the user interacted with the input
+```html
+<style>
+    .gentle-hide { display: none !important; }
+    .gentle-state-invalid { border-color: red; }
+    .gentle-state-valid { border-color: green; }
+</style>
 
-This one is pretty obvious: an input should be validated when the user interacted with it, not before.
-So when the page loads and the form appears, there's no error messages displayed nor "redish" inputs.
+<form>
+    <input type="text" name="firstname" required>
 
-What's trickier to define is what "interacted with" means.
+    <div data-gentle-errors-for="firstname">
+        <div data-gentle-error-when="valueMissing">This field is required.</div>
+    </div>
 
-GentleForm considers that the user interacted with an input when he focused it, typed something and un-focused it (blur).
-So, considering an email input: the user click in, type his email address and then click away.
-If there's an error, this is when the error feedback are displayed.
+    <button type="submit">Submit</button>
+</form>
 
-Why not validating it before, e.g when he's typing?
-Real time validation is so damn cool, isn't it?
-Maybe it is, but certainly not for users.
-It's like saying to someone that he failed even before he's done trying and that is definitely not cool.
+<script src="GentleForm.min.js"></script>
+<script>
+    new GentleForm('form', function onSubmit (event, isValid, data) {});
+</script>
+```
 
-## Form submission
+*Note: GentleForm reference inputs by their name.*
 
-Still, there's a case where we need to validate inputs, no matter whether the user interacted with them or not: on the form's submission.
-The thing is, an user could try to submit an invalid form.
-Maybe he just missed some fields, maybe he misunderstood something.
-In such case, the reasons of the failure should be crystal clear.
-This is why the form's submit event triggers the validation of each of its inputs.
+## Documentation
 
-## States
+* [States And Styles]()
+* [HTML Attributes]()
+* [Handling Submission]()
 
-So far we talked about form validation: when we check that things looks like expected.
-Along with that, GentleForm also deals with states.
-A state is represented by two things: a property applied to elements and a css class.
+### States And Styles
 
-Name|CSS Class|Description
-----|---------|-----------
-dirty|gentle-state-dirty|The user typed something.
-touched|gentle-state-touched|The input lost focus.
-interacted|gentle-state-interacted|The input lost focus after being dirty.
-invalid|gentle-state-invalid|The input is invalid.
-valid|gentle-state-valid|The input is valid.
+To validate inputs, display error messages and for styling reasons, GentleForm deals with "states".
+A state is actually a name that represent the status of an input.
+When modifying an element's state, GentleForm also add or remove the related css class.
 
-For more details, please have a look at the [documentation](https://github.com/Zhouzi/GentleForm/wiki).
+State Name|CSS Class|Description
+----------|---------|-----------
+dirty|`gentle-state-dirty`|The user typed something in the input.
+touched|`gentle-state-touched`|The element lost focus.
+interacted|`gentle-state-interacted`|The element lost focus after being dirty.
+submitted|`gentle-state-submitted`|The element has been submitted.
+invalid|`gentle-state-invalid`|The element is invalid.
+valid|`gentle-state-valid`|The element is valid.
+
+A dirty, touched and interacted input looks like:
+
+```html
+<input type="text" name="name" class="gentle-state-dirty gentle-state-touched gentle-state-interacted">
+```
+
+Those states and css classes makes it easy to style invalid and valid inputs:
+
+```html
+<style>
+    .gentle-state-invalid { border-color: red; }
+    .gentle-state-valid { border-color: green; }
+</style>
+```
+
+### HTML Attributes
+
+#### `data-gentle-states-for`
+
+There's some cases where you'll want to add an input's state classes to an other element.
+The demo is a good example: when an input is invalid, its whole container is styled and not just the input itself.
+
+```html
+<!--
+    Below is an example of adding a "reflector".
+    When validating "firstname", the relevant css classes will be added to the div too.
+-->
+
+<div data-gentle-states-for="firstname" class="gentle-state-touched">
+    <input type="text" name="firstname" class="gentle-state-touched">
+</div>
+```
+
+#### `data-gentle-errors-for`
+
+Error messages are grouped within a container that reference an input by its name.
+It actually looks like a "switch" statement.
+
+```html
+<input type="email" name="user_email" required>
+
+<div data-gentle-errors-for="user_email">
+    <div data-gentle-error-when="valueMissing">This field is required.</div>
+    <div data-gentle-error-when="typeMismatch">Please enter a valid email address.</div>
+</div>
+```
+
+Quoting [HTML5Rocks](http://www.html5rocks.com/)' article [Constraint Validation: Native Client Side Validation for Web Forms](http://www.html5rocks.com/en/tutorials/forms/constraintvalidation/), here are the possible values:
+
+* **customError**: true if a custom validity message has been set per a call to setCustomValidity().
+* **patternMismatch**: true if the node's value does not match its pattern attribute.
+* **rangeOverflow**: true if the node's value is greater than its max attribute.
+* **rangeUnderflow**: true if the node's value is less than its min attribute.
+* **stepMismatch**: true if the node's value is invalid per its step attribute.
+* **tooLong**: true if the node's value exceeds its maxlength attribute.
+* **typeMismatch**: true if an input node's value is invalid per its type attribute.
+* **valueMissing**: true if the node has a required attribute but has no value.
+* **valid**: true if all of the validity conditions listed above are false.
+
+### Handling Submission
+
+The second argument passed to GentleForm's instantiation is a function to execute on form submission.
+This function receives three arguments:
+
+1. `event`: The event object.
+2. `isValid`: Whether the form is valid or not.
+3. `data`: The form's data.
+
+So, considering the markup below:
+
+```html
+<form>
+    <input type="text" name="firstname" value="andrew">
+</form>
+```
+
+The structure of the data object would look like:
+
+```javascript
+{
+    "firstname": {
+        "value": "andrew",
+        "errors": {
+            "customError": false,
+            "patternMismatch": false,
+            "rangeOverflow": false,
+            "rangeUnderflow": false,
+            "stepMismatch": false,
+            "tooLong": false,
+            "typeMismatch": false,
+            "valueMissing": false
+        }
+    }
+}
+```
+
+*Note: the event's propagation is automatically stopped.*
