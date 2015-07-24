@@ -41,7 +41,7 @@ GentleForm accepts two arguments: the first one is a selector string or a DOM el
 </script>
 ```
 
-*Note: GentleForm reference inputs by their name.*
+*Note: GentleForm references inputs by their name.*
 
 ## Documentation
 
