@@ -7,6 +7,8 @@ Validate forms at the right time, using browser's native api.
 * [Usage](https://github.com/Zhouzi/GentleForm#usage)
 * [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
 
+Note: GentleForm's design is largely inspired by [Angular](https://angularjs.org/)'s [formController](https://docs.angularjs.org/api/ng/type/form.FormController) and [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
+
 ## Usage
 
 1. [Download GentleForm](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.min.js)
