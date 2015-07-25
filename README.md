@@ -31,7 +31,7 @@ GentleForm accepts two arguments: the first one is a selector string or a DOM el
     <input type="text" name="firstname" required>
 
     <div data-gentle-errors-for="firstname">
-        <div data-gentle-error-when="valueMissing">This field is required.</div>
+        <div data-gentle-errors-when="valueMissing">This field is required.</div>
     </div>
 
     <button type="submit">Submit</button>
@@ -108,8 +108,8 @@ It actually looks like a "switch" statement.
 <input type="email" name="user_email" required>
 
 <div data-gentle-errors-for="user_email">
-    <div data-gentle-error-when="valueMissing">This field is required.</div>
-    <div data-gentle-error-when="typeMismatch">Please enter a valid email address.</div>
+    <div data-gentle-errors-when="valueMissing">This field is required.</div>
+    <div data-gentle-errors-when="typeMismatch">Please enter a valid email address.</div>
 </div>
 ```
 
@@ -134,15 +134,21 @@ This function receives three arguments:
 2. `isValid`: Whether the form is valid or not.
 3. `data`: The form's data.
 
-So, considering the markup below:
+**Example:**
+
+Considering the markup:
 
 ```html
 <form>
     <input type="text" name="firstname" value="andrew">
+    <button type="submit">Submit</button>
 </form>
+
+<script src="path/to/GentleForm.min.js"></script>
+<script>new GentleForm('form', function (event, isValid, data) {});</script>
 ```
 
-The structure of the data object would look like:
+Submitting the form would bring a data object that looks like:
 
 ```javascript
 {
