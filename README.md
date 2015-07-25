@@ -149,6 +149,7 @@ The structure of the data object would look like:
     "firstname": {
         "value": "andrew",
         "errors": {
+            "invalid": false,
             "customError": false,
             "patternMismatch": false,
             "rangeOverflow": false,
