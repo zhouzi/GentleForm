@@ -3,7 +3,7 @@
 Validate forms at the right time, using browser's native api.
 
 * [Demo on CodePen](http://codepen.io/Zhouzi/full/QbBzZp/)
-* *Introduction (Coming soon...)*
+* [Introduction](http://gabinaureche.com/javascript/form/ux/2015/07/25/validate-forms-at-the-right-time-using-browser-native-api/)
 * [Usage](https://github.com/Zhouzi/GentleForm#usage)
 * [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
 
