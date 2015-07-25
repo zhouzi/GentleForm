@@ -28,8 +28,6 @@ export default class GentleForm {
                 self.validate($target);
             })
             .on('submit', event => {
-                event.preventDefault();
-
                 self.$form.setState('submitted', true, self.$form);
 
                 let data = {};
@@ -50,7 +48,7 @@ export default class GentleForm {
             })
         ;
 
-        $('[data-gentle-error-when]', self.$form).hide();
+        $('[data-gentle-errors-when]', self.$form).hide();
     }
 
     validate ($elements, validateForm = false) {
@@ -73,7 +71,7 @@ export default class GentleForm {
             $errorMessages.each(element => {
                 for (let errorKey in errors) {
                     if (!errors.hasOwnProperty(errorKey)) continue;
-                    $children = $(`[data-gentle-error-when="${errorKey}"`, element);
+                    $children = $(`[data-gentle-errors-when="${errorKey}"`, element);
 
                     if (errors[errorKey]) {
                         if (tag != 'form' || validateForm) $children.show();
