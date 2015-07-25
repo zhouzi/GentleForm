@@ -161,5 +161,3 @@ The structure of the data object would look like:
     }
 }
 ```
-
-*Note: the event's propagation is automatically stopped.*
