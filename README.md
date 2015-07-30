@@ -201,4 +201,4 @@ GentleForm currently support those aria attributes:
 * `aria-invalid`: set to true when an input is validated to invalid
 * `aria-checked`: added to checkboxes and radios, set to true when they are checked
 
-*Note: `aria-invalid` and `aria-checked` are added after the first validation so they are not present until the user interacted with the inputs.*
+*Note: `aria-invalid` and `aria-checked` are added after the first validation so they are not present until the user interact with the inputs.*
