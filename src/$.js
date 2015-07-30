@@ -21,9 +21,13 @@ class $ {
         return this;
     }
 
-    on (eventName, callback) {
+    on (event, callback) {
+        let events = event.replace(/\s/g, '').split(',');
+
         this.each(element => {
-            element.addEventListener(eventName, callback, ['focus', 'blur'].indexOf(eventName) > -1);
+            events.forEach(function (eventName) {
+                element.addEventListener(eventName, callback, ['focus', 'blur'].indexOf(eventName) > -1);
+            });
         });
 
         return this;
@@ -40,12 +44,20 @@ class $ {
     }
 
     show () {
-        this.removeClass('gentle-hide');
+        this
+            .aria('hidden', false)
+            .removeClass('gentle-hide')
+        ;
+
         return this;
     }
 
     hide () {
-        this.addClass('gentle-hide');
+        this
+            .aria('hidden', true)
+            .addClass('gentle-hide')
+        ;
+
         return this;
     }
 
@@ -76,6 +88,8 @@ class $ {
 
         let className = 'gentle-state-' + stateName;
         let $reflectors = new $(`[data-gentle-state-for="${this.getAttr('name')}"]`, parentForm);
+
+        if (stateName == 'invalid') this.aria('invalid', stateValue);
 
         if (stateValue) {
             this.addClass(className);
@@ -121,10 +135,7 @@ class $ {
 
     html (htmlContent) {
         if (typeof htmlContent == 'string') {
-            this.each(function (element) {
-                element.innerHTML = htmlContent;
-            });
-
+            this.each(element => { element.innerHTML = htmlContent; });
             return this;
         }
 
@@ -133,6 +144,11 @@ class $ {
 
     tagName () {
         return this.elements.length ? this.get(0).tagName.toLowerCase() : '';
+    }
+
+    aria (prop, value) {
+        this.setAttr(`aria-${prop}`, value);
+        return this;
     }
 }
 

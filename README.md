@@ -50,6 +50,7 @@ GentleForm accepts two arguments: the first one is a selector string or a DOM el
 * [States And Styles](https://github.com/Zhouzi/GentleForm#states-and-styles)
 * [HTML Attributes](https://github.com/Zhouzi/GentleForm#html-attributes)
 * [Handling Submission](https://github.com/Zhouzi/GentleForm#handling-submission)
+* [ARIA Support](https://github.com/Zhouzi/GentleForm#aria-support)
 
 ### States And Styles
 
@@ -191,3 +192,13 @@ Submitting the form would bring a data object that looks like:
     }
 }
 ```
+
+### ARIA Support
+
+GentleForm currently support those aria attributes:
+
+* `aria-hidden`: added to the elements that GentleForm hides
+* `aria-invalid`: set to true when an input is validated to invalid
+* `aria-checked`: added to checkboxes and radios, set to true when they are checked
+
+*Note: `aria-invalid` and `aria-checked` are added after the first validation so they are not present until the user interacted with the inputs.*

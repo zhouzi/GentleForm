@@ -11,18 +11,27 @@ export default class GentleForm {
         self.onSubmit = typeof onSubmit == 'function' ? onSubmit : () => {};
 
         self.$form
-            .on('mouseup', event => {
+            .on('focus, mouseup', event => {
                 // the input event doesn't trigger for checkbox and radio (while it does for selects)
+                // we need to listen to the focus event to support labels that are bound to inputs (e.g clicking the label checks the box)
                 let $target = $(event.target);
 
-                if ($target.tagName() == 'input' && ['checkbox', 'radio'].indexOf($target.getAttr('type')) > -1) {
-                    // mouse up is triggered before the input's value changes so the validity object says it's invalid at this point
-                    // setting a timeout lets some room to the validity object to update
-                    setTimeout(() => {
-                        $target.concat(self.$form).setState('dirty', true, self.$form);
-                        self.validate($target);
-                    }, 0);
-                }
+                if ($target.tagName() != 'input' || ['checkbox', 'radio'].indexOf($target.getAttr('type')) < 0) return;
+
+                // the event is triggered before the input's value changes so the validity object says it's invalid at this point
+                // setting a timeout lets some room to the validity object to update
+                setTimeout(() => {
+                    if ($target.getAttr('type') == 'radio') {
+                        $(`[name="${$target.getAttr('name')}"]`).each(function (element) {
+                            $(element, self.$form).aria('checked', element.checked)
+                        });
+                    } else {
+                        $target.aria('checked', $target.get(0).checked);
+                    }
+
+                    $target.concat(self.$form).setState('dirty', true, self.$form);
+                    self.validate($target);
+                }, 0);
             })
             .on('blur', event => {
                 let $target = $(event.target);
