@@ -1,9 +1,12 @@
 import $ from './$';
 import isFormInput from './isFormInput';
 
+const TEMPLATES = {};
+
 export default class GentleForm {
     constructor (selector, onSubmit) {
         let self = this;
+
         self.$form = $(selector);
         self.onSubmit = typeof onSubmit == 'function' ? onSubmit : () => {};
 
@@ -47,6 +50,15 @@ export default class GentleForm {
                 self.onSubmit(event, self.$form.isValid(), data);
             })
         ;
+
+        $('[data-gentle-include]').each(function (element) {
+            var $element = $(element);
+            var id = $element.getAttr('data-gentle-include');
+
+            if (typeof TEMPLATES[id] != 'string') TEMPLATES[id] = $(`#${id}`).textContent();
+
+            $element.html($element.html() + TEMPLATES[id]);
+        });
 
         $('[data-gentle-errors-when]', self.$form).hide();
     }

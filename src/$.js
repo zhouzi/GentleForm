@@ -114,6 +114,22 @@ class $ {
 
         return errors;
     }
+
+    textContent () {
+        return this.elements.length ? this.get(0).textContent : '';
+    }
+
+    html (htmlContent) {
+        if (typeof htmlContent == 'string') {
+            this.each(function (element) {
+                element.innerHTML = htmlContent;
+            });
+
+            return this;
+        }
+
+        return this.get(0).innerHTML;
+    }
 }
 
 export default (selector, parent) => {

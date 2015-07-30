@@ -125,6 +125,29 @@ Quoting [HTML5Rocks](http://www.html5rocks.com/)' article [Constraint Validation
 * **valueMissing**: true if the node has a required attribute but has no value.
 * **valid**: true if all of the validity conditions listed above are false.
 
+#### `data-gentle-include`
+
+This attribute allows you to include a template so you don't have to duplicate the same error message for every inputs.
+
+```html
+<form>
+    <input type="text" name="firstname">
+    <div data-gentle-errors-for="firstname" data-gentle-include="form-errors"></div>
+
+    <input type="text" name="lastname">
+    <div data-gentle-errors-for="lastname" data-gentle-include="form-errors"></div>
+
+    <input type="email" name="email">
+    <div data-gentle-errors-for="email" data-gentle-include="form-errors">
+        <div data-gentle-errors-when="typeMismatch">Please enter a valid email address.</div>
+    </div>
+</form>
+
+<script id="form-errors" type="text/gentle-template">
+    <div data-gentle-errors-when="valueMissing">This field is required.</div>
+</script>
+```
+
 ### Handling Submission
 
 The second argument passed to GentleForm's instantiation is a function to execute on form submission.
