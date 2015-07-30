@@ -11,6 +11,19 @@ export default class GentleForm {
         self.onSubmit = typeof onSubmit == 'function' ? onSubmit : () => {};
 
         self.$form
+            .on('mouseup', event => {
+                // the input event doesn't trigger for checkbox and radio (while it does for selects)
+                let $target = $(event.target);
+
+                if ($target.tagName() == 'input' && ['checkbox', 'radio'].indexOf($target.getAttr('type')) > -1) {
+                    // mouse up is triggered before the input's value changes so the validity object says it's invalid at this point
+                    // setting a timeout lets some room to the validity object to update
+                    setTimeout(() => {
+                        $target.concat(self.$form).setState('dirty', true, self.$form);
+                        self.validate($target);
+                    }, 0);
+                }
+            })
             .on('blur', event => {
                 let $target = $(event.target);
 

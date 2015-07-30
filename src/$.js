@@ -130,6 +130,10 @@ class $ {
 
         return this.get(0).innerHTML;
     }
+
+    tagName () {
+        return this.elements.length ? this.get(0).tagName.toLowerCase() : '';
+    }
 }
 
 export default (selector, parent) => {
