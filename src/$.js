@@ -4,7 +4,6 @@ class $ {
             this.elements = selector.get();
         } else if (typeof selector == 'string') {
             if (parent instanceof $) parent = parent.get(0);
-            console.log(selector);
             this.elements = [].slice.call(parent.querySelectorAll(selector));
         } else if (selector instanceof Array) {
             this.elements = selector;
