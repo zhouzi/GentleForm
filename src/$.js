@@ -61,6 +61,10 @@ class $ {
         return this;
     }
 
+    hasAttr (attr) {
+        return this.get(0).hasAttribute(attr);
+    }
+
     getAttr (attr) {
         return this.get(0).getAttribute(attr);
     }
@@ -116,16 +120,83 @@ class $ {
     }
 
     getErrors () {
-        let element = this.get(0);
-        let errors = {};
+        let $element = this;
+        let element = $element.get(0);
 
-        for (let error in element.validity) {
-            if (error == 'valid') errors.invalid = !element.validity.valid;
-            else errors[error] = element.validity[error];
+        let apiErrors = [
+            {
+                name: 'patternMismatch',
+                attribute: 'pattern',
+                isInvalid: () => { return !(new RegExp($element.getAttr('pattern'))).test(element.value); }
+            },
+
+            {
+                name: 'rangeOverflow',
+                attribute: 'max',
+                isInvalid: () => { return element.value > $element.getAttr('max'); }
+            },
+
+            {
+                name: 'rangeUnderflow',
+                attribute: 'min',
+                isInvalid: () => { return element.value < $element.getAttr('min'); }
+            },
+
+            {
+                name: 'tooLong',
+                attribute: 'maxlength',
+                isInvalid: () => { return element.value.length > $element.getAttr('maxlength'); }
+            },
+
+            {
+                name: 'valueMissing',
+                attribute: 'required',
+                isInvalid: () => {
+                    let type = $element.getAttr('type');
+
+                    if (type == 'checkbox') return !element.checked;
+                    else if (type != 'radio') return element.value.length <= 0;
+
+                    let name = $element.getAttr('name');
+                    if (typeof name != 'string') return false;
+
+                    let radios = new $(`[type="radio"][name="${name}"]`).get();
+
+                    for (let i = 0, len = radios.length; i < len; i++) {
+                        if (radios[i].checked) return false;
+                    }
+
+                    return true;
+                }
+            },
+
+            {
+                name: 'typeMismatch',
+                attribute: 'type',
+                isInvalid: () => {
+                    let type = $element.getAttr('type');
+
+                    if (type == 'email') return !/[^\s]+@[^\s]+/.test(element.value);
+                    if (type == 'number') return /[^0-9]/g.test(element.value);
+                    if (type == 'url') return !/(http|ftp)s?:\/\//.test(element.value);
+
+                    return false;
+                }
+            },
+
+            { name: 'customError' },
+            { name: 'stepMismatch' }
+        ];
+
+        let errors = {};
+        if (element.validity !== undefined) {
+            apiErrors.forEach(error => {
+                if (element.validity[error.name] !== 'whatever') errors[error.name] = element.validity[error.name];
+                else if (typeof error.isInvalid == 'function') errors[error.name] = !$element.hasAttr(error.attribute) ? false : error.isInvalid();
+            });
         }
 
-        if (typeof errors.invalid != 'boolean') errors.invalid = !element.checkValidity();
-
+        errors.invalid = !element.checkValidity();
         return errors;
     }
 
