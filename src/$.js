@@ -143,6 +143,12 @@ class $ {
             },
 
             {
+                name: 'tooShort',
+                attribute: 'minlength',
+                isInvalid: () => { return element.value.length < $element.getAttr('minlength'); }
+            },
+
+            {
                 name: 'tooLong',
                 attribute: 'maxlength',
                 isInvalid: () => { return element.value.length > $element.getAttr('maxlength'); }
@@ -191,7 +197,7 @@ class $ {
         let errors = {};
         if (element.validity !== undefined) {
             apiErrors.forEach(error => {
-                if (element.validity[error.name] !== 'whatever') errors[error.name] = element.validity[error.name];
+                if (element.validity[error.name] !== undefined) errors[error.name] = element.validity[error.name];
                 else if (typeof error.isInvalid == 'function') errors[error.name] = !$element.hasAttr(error.attribute) ? false : error.isInvalid();
             });
         }
