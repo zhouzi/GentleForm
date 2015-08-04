@@ -105,7 +105,7 @@ export default class GentleForm {
             $errorMessages.each(element => {
                 for (let errorKey in errors) {
                     if (!errors.hasOwnProperty(errorKey)) continue;
-                    $children = $(`[data-gentle-errors-when="${errorKey}"`, element);
+                    $children = $(`[data-gentle-errors-when="${errorKey}"]`, element);
 
                     if (errors[errorKey]) {
                         if (tag != 'form' || validateForm) $children.show();
