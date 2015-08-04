@@ -7,7 +7,9 @@ Validate forms at the right time, using browser's native api.
 * [Usage](https://github.com/Zhouzi/GentleForm#usage)
 * [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
 
-Note: GentleForm is a lightweight library without any dependencies. That been said, its design is largely inspired by [Angular](https://angularjs.org/)'s [formController](https://docs.angularjs.org/api/ng/type/form.FormController) and [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
+As you'll see, GentleForm's design is largely inspired by [Angular](https://angularjs.org/)'s [formController](https://docs.angularjs.org/api/ng/type/form.FormController) and [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
+
+Note: some of the html5's api that GentleForm relies on are only supported by Chrome (e.g. the `minlength` attribute).
 
 ## Usage
 
