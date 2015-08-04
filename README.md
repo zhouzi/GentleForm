@@ -7,7 +7,9 @@ Validate forms at the right time, using browser's native api.
 * [Usage](https://github.com/Zhouzi/GentleForm#usage)
 * [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
 
-As you'll see, GentleForm's design is largely inspired by [Angular](https://angularjs.org/)'s [formController](https://docs.angularjs.org/api/ng/type/form.FormController) and [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
+If you are familiar with [Angular](https://angularjs.org/), chances are you'll recognize some patterns taken from [formController](https://docs.angularjs.org/api/ng/type/form.FormController) and [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
+
+Note: Some HTML5 attributes and apis are not yet very well supported. GentleForm addresses some of those issues by implementing "polyfills".
 
 ## Usage
 
