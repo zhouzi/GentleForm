@@ -1,0 +1,22 @@
+{
+  "name": "GentleForm",
+  "main": "dist/GentleForm.min.js",
+  "description": "Validate forms at the right time, using browser's native api.",
+  "homepage": "https://github.com/Zhouzi/GentleForm",
+  "authors": [
+    "Gabin Aureche <hello@gabinaureche.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "gulpfile.js",
+    "package.json",
+    "webpack.config.js",
+    "src"
+  ],
+  "devDependencies": {
+    "flooz": "~0.0.1"
+  }
+}
