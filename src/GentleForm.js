@@ -1,113 +1,116 @@
 import $ from './$';
-import isFormInput from './isFormInput';
+import isButton from './isButton';
 
 const TEMPLATES = {};
 
 export default class GentleForm {
     constructor (selector, onSubmit) {
-        let self = this;
+        let $form     = this.$form = $(selector);
+        this.onSubmit = typeof onSubmit == 'function' ? onSubmit : () => {};
 
-        self.$form = $(selector);
-        self.onSubmit = typeof onSubmit == 'function' ? onSubmit : () => {};
-
-        self.$form
-            .on('focus, mouseup', event => {
-                // the input event doesn't trigger for checkbox and radio (while it does for selects)
-                // we need to listen to the focus event to support labels that are bound to inputs (e.g clicking the label checks the box)
+        $form
+            .on('change', event => {
                 let $target = $(event.target);
+                let type    = $target.attr('type');
 
-                if ($target.tagName() != 'input' || ['checkbox', 'radio'].indexOf($target.getAttr('type')) < 0) return;
+                // We need to first make sure that the target is an input of type checkbox or radio.
+                if ($target.prop('tagName') != 'input' ||
+                    ['checkbox', 'radio'].indexOf(type) < 0) return;
 
-                // the event is triggered before the input's value changes so the validity object says it's invalid at this point
-                // setting a timeout lets some room to the validity object to update
-                setTimeout(() => {
-                    if ($target.getAttr('type') == 'radio') {
-                        $(`[name="${$target.getAttr('name')}"]`).each(function (element) {
-                            $(element, self.$form).aria('checked', element.checked)
-                        });
-                    } else {
-                        $target.aria('checked', $target.get(0).checked);
-                    }
-
-                    $target.concat(self.$form).setState('dirty', true, self.$form);
-                    self.validate($target);
-                }, 0);
+                $target.add(this.$form).setState('dirty', true, this.$form);
+                this.validate($target);
             })
             .on('blur', event => {
                 let $target = $(event.target);
 
-                if (!isFormInput($target)) return;
+                if (isButton($target)) return;
 
                 let isDirty = $target.getState('dirty');
 
-                $target.concat(self.$form).setState('touched', true, self.$form);
+                $target.add(this.$form).setState('touched', true, this.$form);
 
-                if (isDirty) $target.setState('interacted', true, self.$form);
+                if (isDirty) $target.setState('interacted', true, this.$form);
 
-                self.validate($target);
+                this.validate($target);
             })
             .on('input', event => {
                 let $target = $(event.target);
-                $target.concat(self.$form).setState('dirty', true, self.$form);
 
-                self.validate($target);
+                $target.add(this.$form).setState('dirty', true, this.$form);
+                this.validate($target);
             })
             .on('submit', event => {
-                self.$form.setState('submitted', true, self.$form);
+                this.$form.setState('submitted', true, this.$form);
 
-                let data = {};
-                for (let i = 0, form = self.$form.get(0), len = form.length, $e, name; i < len; i++) {
-                    $e = $(form[i]);
+                let formValidity = this.$form.validity();
+                let children     = formValidity.children;
+                let data         = {};
 
-                    if (!isFormInput($e)) continue;
+                let $child;
+                children.forEach(child => {
+                    $child = $(child.element);
 
-                    $e.setState('submitted', true, self.$form);
-                    self.validate($e);
+                    $child.setState('submitted', true, this.$form);
+                    this.validate($child);
 
-                    name = $e.getAttr('name');
-                    data[name] = { errors: $e.getErrors(), value: $e.getValue() };
-                }
+                    data[$child.attr('name')] = { validity: child.validity, value: $child.val() };
+                });
 
-                self.validate(self.$form, true);
-                self.onSubmit(event, self.$form.isValid(), data);
+                this.validate(this.$form, true);
+                this.onSubmit(event, formValidity.valid, data);
             })
         ;
 
-        $('[data-gentle-include]').each(function (element) {
-            var $element = $(element);
-            var id = $element.getAttr('data-gentle-include');
+        $('[data-gentle-include]').each((element) => {
+            let $element   = $(element);
+            let templateId = $element.attr('data-gentle-include');
 
-            if (typeof TEMPLATES[id] != 'string') TEMPLATES[id] = $(`#${id}`).textContent();
+            if (typeof TEMPLATES[templateId] != 'string') TEMPLATES[templateId] = $(`#${templateId}`).text();
 
-            $element.html($element.html() + TEMPLATES[id]);
+            $element.html($element.html() + TEMPLATES[templateId]);
         });
 
-        $('[data-gentle-errors-when]', self.$form).hide();
+        $('[data-gentle-errors-when]', this.$form).hide();
     }
 
     validate ($elements, validateForm = false) {
-        let self = this;
-
         $elements.each(element => {
             let $element = $(element);
-            let tag = $element.get(0).tagName.toLowerCase();
+            let tag      = $element.prop('tagName');
 
+            // Can't validate a form that is not submitted (see below).
             if (tag == 'form' && !$element.getState('submitted')) return;
+
+            // An element needs to be whether interacted or submitted to be validated.
             if (!$element.getState('interacted') && !$element.getState('submitted')) return;
 
-            if ($element.isValid()) $element.setState('invalid', false, self.$form).setState('valid', true, self.$form);
-            else if (tag != 'form' || validateForm) $element.setState('invalid', true, self.$form).setState('valid', false, self.$form);
+            if ($element.checkValidity()) {
+                $element
+                    .setState('invalid', false, this.$form)
+                    .setState('valid', true, this.$form)
+                ;
+            } else if (tag != 'form' || validateForm) {
+                // By default, a form's state is not updated if invalid.
+                // This behavior is overwritten by the "validateForm" parameter which is passed as true on form submission.
+                // The fact is, we do not want to display global errors (related the form element) before submission.
+                $element
+                    .setState('invalid', true, this.$form)
+                    .setState('valid', false, this.$form)
+                ;
+            }
 
-            let errors = $element.getErrors();
-            let $errorMessages = $(`[data-gentle-errors-for="${$element.getAttr('name')}"]`, this.$form);
+            let errors         = $element.getErrors(); // getErrors makes the validity object clearer.
+            let $errorMessages = $(`[data-gentle-errors-for="${$element.attr('name')}"]`, this.$form);
             let $children;
 
             $errorMessages.each(element => {
                 for (let errorKey in errors) {
                     if (!errors.hasOwnProperty(errorKey)) continue;
+
                     $children = $(`[data-gentle-errors-when="${errorKey}"]`, element);
 
                     if (errors[errorKey]) {
+                        // Once again, do not show global error messages (apart on form submission).
                         if (tag != 'form' || validateForm) $children.show();
                     } else {
                         $children.hide();
