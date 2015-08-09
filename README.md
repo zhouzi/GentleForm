@@ -182,7 +182,8 @@ While those ones are added on GentleForm's instantiation:
 * `role=alert live=assertive atomic=true`: added to error messages (`[data-errors-for]`).
 * `aria-describedby`: added to inputs that have related error messages (support multiple references).
 
-It means that you'll probably want to refresh aria attributes when adding/removing elements or changing an input's required attribute.
+There's nothing you need to do for the aria attributes to be added as long as you do not manipulate the form's DOM content.
+Otherwise, if you need to add/remove form elements or change a required attribute you can call `.refreshAria()`.
 Here is an example of how you could do that:
 
 ```html
