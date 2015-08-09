@@ -1,193 +1,94 @@
 # GentleForm
 
-Validate forms at the right time, using browser's native api.
+Form validation, the right way.
 
 * [Demo on CodePen](http://codepen.io/Zhouzi/full/QbBzZp/)
-* [Introduction](http://gabinaureche.com/javascript/form/ux/2015/07/25/validate-forms-at-the-right-time-using-browser-native-api/)
+* [Features](https://github.com/Zhouzi/GentleForm#features)
 * [Usage](https://github.com/Zhouzi/GentleForm#usage)
 * [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
 
-If you are familiar with [Angular](https://angularjs.org/), chances are you'll recognize some patterns taken from [formController](https://docs.angularjs.org/api/ng/type/form.FormController) and [ngMessages](https://docs.angularjs.org/api/ngMessages/directive/ngMessages).
+## Features
 
-Note: Some HTML5 attributes and apis are not yet very well supported. GentleForm addresses some of those issues by implementing "polyfills".
+* Lightweight, no dependencies.
+* Display error messages and validate inputs when it makes sense from an user perspective.
+* Improve forms' accessibility by adding the relevant aria attributes.
+* Supports "cached" templates to avoid duplicating error messages.
 
 ## Usage
 
-1. [Download GentleForm](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.min.js)
+1. Download GentleForm
+    * From the repo: [GentleForm.min.js](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.min.js)
 2. Include it: `<script src="path/to/GentleForm.min.js"></script>`
-3. Add the required styles: `.gentle-hide { display: none !important; }`
-4. You are now able to create a new instance: `new GentleForm('form', function onSubmit (event, isValid, data) {})`
-
-GentleForm accepts two arguments: the first one is a selector string or a DOM element, the second one is a function to call on form submission.
+3. Add the required styles: `.is-hidden { display: none !important; }`
 
 **Basic example:**
 
 ```html
 <style>
-    .gentle-hide { display: none !important; }
-    .gentle-state-invalid { border-color: red; }
-    .gentle-state-valid { border-color: green; }
+    .is-hidden { display: none !important; }
+    .is-invalid { border-color: red; }
+    .is-valid { border-color: green; }
 </style>
 
 <form>
     <input type="text" name="firstname" required>
 
-    <div data-gentle-errors-for="firstname">
-        <div data-gentle-errors-when="valueMissing">This field is required.</div>
+    <div data-errors-for="firstname">
+        <div data-errors-when="valueMissing">This field is required.</div>
     </div>
 
     <button type="submit">Submit</button>
 </form>
 
 <script src="GentleForm.min.js"></script>
-<script>
-    new GentleForm('form', function onSubmit (event, isValid, data) {});
-</script>
+<script>new GentleForm('form', function onSubmit (event, isValid, data) {});</script>
 ```
-
-*Note: GentleForm references inputs by their name.*
 
 ## Documentation
 
-* [States And Styles](https://github.com/Zhouzi/GentleForm#states-and-styles)
-* [HTML Attributes](https://github.com/Zhouzi/GentleForm#html-attributes)
-* [Handling Submission](https://github.com/Zhouzi/GentleForm#handling-submission)
+* [Instantiation And Form Submission](https://github.com/Zhouzi/GentleForm#instantiation-and-form-submission)
+* [CSS Classes](https://github.com/Zhouzi/GentleForm#css-classes)
+* [Error Messages](https://github.com/Zhouzi/GentleForm#error-messages)
+* [Caching Templates](https://github.com/Zhouzi/GentleForm#caching-templates)
 * [ARIA Support](https://github.com/Zhouzi/GentleForm#aria-support)
 
-### States And Styles
-
-To validate inputs, display error messages and for styling reasons, GentleForm deals with "states".
-A state is actually a name that represent the status of an input.
-When modifying an element's state, GentleForm also add or remove the related css class.
-
-State Name|CSS Class|Description
-----------|---------|-----------
-dirty|`gentle-state-dirty`|The user typed something in the input.
-touched|`gentle-state-touched`|The element lost focus.
-interacted|`gentle-state-interacted`|The element lost focus after being dirty.
-submitted|`gentle-state-submitted`|The element has been submitted.
-invalid|`gentle-state-invalid`|The element is invalid.
-valid|`gentle-state-valid`|The element is valid.
-
-A dirty, touched and interacted input looks like:
-
-```html
-<input type="text" name="name" class="gentle-state-dirty gentle-state-touched gentle-state-interacted">
-```
-
-Those states and css classes makes it easy to style invalid and valid inputs:
-
-```html
-<style>
-    .gentle-state-invalid { border-color: red; }
-    .gentle-state-valid { border-color: green; }
-</style>
-```
-
-### HTML Attributes
-
-#### `data-gentle-states-for`
-
-There's some cases where you'll want to add an input's state classes to an other element.
-The demo is a good example: when an input is invalid, its whole container is styled and not just the input itself.
-
-```html
-<!--
-    Below is an example of adding a "reflector".
-    When validating "firstname", the relevant css classes will be added to the div too.
--->
-
-<div data-gentle-states-for="firstname" class="gentle-state-touched">
-    <input type="text" name="firstname" class="gentle-state-touched">
-</div>
-```
-
-#### `data-gentle-errors-for`
-
-Error messages are grouped within a container that reference an input by its name.
-It actually looks like a "switch" statement.
-
-```html
-<input type="email" name="user_email" required>
-
-<div data-gentle-errors-for="user_email">
-    <div data-gentle-errors-when="valueMissing">This field is required.</div>
-    <div data-gentle-errors-when="typeMismatch">Please enter a valid email address.</div>
-</div>
-```
-
-Quoting [HTML5Rocks](http://www.html5rocks.com/)' article [Constraint Validation: Native Client Side Validation for Web Forms](http://www.html5rocks.com/en/tutorials/forms/constraintvalidation/), here are the possible values:
-
-* **customError**: true if a custom validity message has been set per a call to setCustomValidity().
-* **patternMismatch**: true if the node's value does not match its pattern attribute.
-* **rangeOverflow**: true if the node's value is greater than its max attribute.
-* **rangeUnderflow**: true if the node's value is less than its min attribute.
-* **stepMismatch**: true if the node's value is invalid per its step attribute.
-* **tooLong**: true if the node's value exceeds its maxlength attribute.
-* **typeMismatch**: true if an input node's value is invalid per its type attribute.
-* **valueMissing**: true if the node has a required attribute but has no value.
-* **valid**: true if all of the validity conditions listed above are false.
-
-#### `data-gentle-include`
-
-This attribute allows you to include a template so you don't have to duplicate the same error message for every inputs.
+### Instantiation And Form Submission
 
 ```html
 <form>
-    <input type="text" name="firstname">
-    <div data-gentle-errors-for="firstname" data-gentle-include="form-errors"></div>
-
-    <input type="text" name="lastname">
-    <div data-gentle-errors-for="lastname" data-gentle-include="form-errors"></div>
-
-    <input type="email" name="email">
-    <div data-gentle-errors-for="email" data-gentle-include="form-errors">
-        <div data-gentle-errors-when="typeMismatch">Please enter a valid email address.</div>
+    <input type="text" name="firstname" required>
+    <div data-errors-for="firstname">
+        <div data-errors-when="valueMissing">This field is required.</div>
     </div>
-</form>
-
-<script id="form-errors" type="text/gentle-template">
-    <div data-gentle-errors-when="valueMissing">This field is required.</div>
-</script>
-```
-
-### Handling Submission
-
-The second argument passed to GentleForm's instantiation is a function to execute on form submission.
-This function receives three arguments:
-
-1. `event`: The event object.
-2. `isValid`: Whether the form is valid or not.
-3. `data`: The form's data.
-
-**Example:**
-
-Considering the markup:
-
-```html
-<form>
-    <input type="text" name="firstname" value="andrew">
-    <button type="submit">Submit</button>
 </form>
 
 <script src="path/to/GentleForm.min.js"></script>
 <script>new GentleForm('form', function (event, isValid, data) {});</script>
 ```
 
-Submitting the form would bring a data object that looks like:
+The first argument passed to GentleForm is a css selector targetting a form.
+The second one is a function to call on form submission.
+The callback receives three arguments:
+
+1. `event` - the submit event.
+2. `isValid` - a boolean indicating if the form is valid or not.
+3. `data` - an object containing the form's data.
+
+So given the example above, considering that the firstname input has been filled with "joe", the data object would look like:
 
 ```javascript
 {
     "firstname": {
-        "value": "andrew",
-        "errors": {
-            "invalid": false,
+        "value": "joe",
+        "validity": {
+            "valid": false,
             "customError": false,
             "patternMismatch": false,
             "rangeOverflow": false,
             "rangeUnderflow": false,
             "stepMismatch": false,
             "tooLong": false,
+            "tooShort": false,
             "typeMismatch": false,
             "valueMissing": false
         }
@@ -195,12 +96,76 @@ Submitting the form would bring a data object that looks like:
 }
 ```
 
+### CSS Classes
+
+Name         | Description
+-------------|---------------------------------------------------------------------------
+is-hidden    | Used to hide error messages.
+is-changed   | Added when the input's value [change](https://developer.mozilla.org/en-US/docs/Web/Events/change)'d, meaning the user interacted with it.
+is-submitted | Added when the input has been submitted.
+is-valid     | Added when the input is valid.
+is-invalid   | Added when the input is invalid.
+
+Note: the inputs are validated in real time but only after the "is-changed" and/or "is-submitted" classes has been added.
+It means that an input won't have the class "is-valid" nor "is-invalid" until the user interact with it.*
+
+Those classes are added to the form elements their selves.
+If you want to add them to an other element, you can use the "data-states-for" attribute.
+
+```html
+<input type="text" name="firstname">
+<div data-states-for="firstname"></div>
+```
+
+So now, every classes that are added to the firstname's input will be added to the div too.
+
+### Error Messages
+
+```html
+<input type="text" name="firstname" required>
+<div data-errors-for="firstname">
+    <div data-errors-when="valueMissing">This field is required.</div>
+</div>
+```
+
+As you can see, the `data-errors-for` attribute acts a bit like a switch statement.
+You first need to declare what input it is related.
+Then you can add messages for each of the form element's [validityState](https://developer.mozilla.org/fr/docs/Web/API/ValidityState) properties, listed below.
+
+* `badInput` indicates if the user has provided input that the browser is unable to convert.
+* `customError` indicates if the element's custom validity message has been set to a non-empty string by calling the element's `setCustomValidity()` method.
+* `patternMismatch` indicates if the value does not match the specified pattern (e.g `<input pattern="[a-z]">`).
+* `rangeOverflow` indicates if the value is greater than the maximum specified by the max attribute (e.g `<input max="5">`).
+* `rangeUnderflow` indicates if the value is less than the minimum specified by the min attribute (e.g `<input min="5">`).
+* `stepMismatch` indicates if the value does not fit the rules determined by the step attribute (that is, it's not evenly divisible by the step value).
+* `tooLong` indicates if the value exceeds the specified maxlength for HTMLInputElement or HTMLTextAreaElement objects (e.g `<input maxlength="5">`).
+* `tooShort` indicates if the value exceeds the specified minlength for HTMLInputElement or HTMLTextAreaElement objects (e.g `<input minlength="5">`).
+* `typeMismatch` indicates if the value is not in the required syntax (when type is email or url).
+* `valid ` indicates if the element meets all constraint validations, and is therefore considered to be valid.
+* `valueMissing ` indicates if the element has a required attribute, but no value (e.g `<input required>`).
+
+The `validityState` object and `checkValidity()` method are not fully supported, even by modern browsers.
+To ensure a consistent behavior, GentleForm internally uses [flooz]() which has "polyfills" for those features.
+
+### Caching Templates
+
+To avoid duplicating the same error messages for every form elements, you can use the `data-include` attribute.
+
+```html
+<input type="text" name="firstname" required>
+<div data-errors-for="firstname" data-include="form-errors"></div>
+
+<input type="text" name="lastname" required>
+<div data-errors-for="lastname" data-include="form-errors"></div>
+
+<script type="text/gentle-template">
+    <div data-errors-when="valueMissing">This field is required.</div>
+</script>
+```
+
 ### ARIA Support
 
 GentleForm currently support those aria attributes:
 
-* `aria-hidden`: added to the elements that GentleForm hides
-* `aria-invalid`: set to true when an input is validated to invalid
-* `aria-checked`: added to checkboxes and radios, set to true when they are checked
-
-*Note: `aria-invalid` and `aria-checked` are added after the first validation so they are not present until the user interact with the inputs.*
+* `aria-hidden`: added and set to true along with the `is-hidden` class.
+* `aria-invalid`: added and set to true to invalid elements.
