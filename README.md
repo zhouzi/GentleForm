@@ -6,6 +6,11 @@ Form validation, the right way.
 * [Features](https://github.com/Zhouzi/GentleForm#features)
 * [Usage](https://github.com/Zhouzi/GentleForm#usage)
 * [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
+    * [Instantiation And Form Submission](https://github.com/Zhouzi/GentleForm#instantiation-and-form-submission)
+    * [CSS Classes](https://github.com/Zhouzi/GentleForm#css-classes)
+    * [Error Messages](https://github.com/Zhouzi/GentleForm#error-messages)
+    * [Caching Templates](https://github.com/Zhouzi/GentleForm#caching-templates)
+    * [ARIA Support](https://github.com/Zhouzi/GentleForm#aria-support)
 
 ## Features
 
