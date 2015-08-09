@@ -146,7 +146,7 @@ Then you can add messages for each of the form element's [validityState](https:/
 * `valueMissing ` indicates if the element has a required attribute, but no value (e.g `<input required>`).
 
 The `validityState` object and `checkValidity()` method are not fully supported, even by modern browsers.
-To ensure a consistent behavior, GentleForm internally uses [flooz]() which has "polyfills" for those features.
+To ensure a consistent behavior, GentleForm internally uses [flooz](https://github.com/Zhouzi/flooz) which has "polyfills" for those features.
 
 ### Caching Templates
 
