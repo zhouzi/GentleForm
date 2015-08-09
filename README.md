@@ -111,11 +111,11 @@ Note: the inputs are validated in real time but only after the "is-changed" and/
 It means that an input won't have the class "is-valid" nor "is-invalid" until the user interact with it.*
 
 Those classes are added to the form elements their selves.
-If you want to add them to an other element, you can use the "data-state-for" attribute.
+If you want to add them to an other element, you can use the "data-states-for" attribute.
 
 ```html
 <input type="text" name="firstname">
-<div data-state-for="firstname"></div>
+<div data-states-for="firstname"></div>
 ```
 
 So now, every classes that are added to the firstname's input will be added to the div too.

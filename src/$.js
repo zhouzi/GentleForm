@@ -15,7 +15,7 @@ core.fn.setState = function (stateName, stateValue, container) {
     else if ((stateName == 'invalid' && stateValue === false) || (stateName == 'valid' && stateValue === true)) this.aria('invalid', false);
 
     let className = `is-${stateName}`;
-    let $targets  = new $(`[data-state-for="${this.attr('name')}"]`, container).add(this.get());
+    let $targets  = new $(`[data-states-for="${this.attr('name')}"]`, container).add(this.get());
 
     if (stateValue) $targets.addClass(className);
     else $targets.removeClass(className);
