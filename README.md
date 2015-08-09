@@ -22,8 +22,9 @@ HTML5 accessible and user-friendly form validation.
 
 ## Usage
 
-1. Download GentleForm
+1. Get GentleForm
     * From the repo: [GentleForm.min.js](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.min.js)
+    * With bower: `bower install gentleform`
 2. Include it: `<script src="path/to/GentleForm.min.js"></script>`
 3. Add the required styles: `.is-hidden { display: none !important; }`
 
