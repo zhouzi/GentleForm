@@ -2,6 +2,7 @@ import $ from './$';
 import utils from './utils';
 
 const TEMPLATES = {};
+let globalIds = 0;
 
 export default class GentleForm {
     constructor (selector, onSubmit) {
@@ -43,7 +44,7 @@ export default class GentleForm {
             })
         ;
 
-        $('[data-include]').each((element) => {
+        $('[data-include]', $form).each((element) => {
             let $element   = $(element);
             let templateId = $element.attr('data-include');
 
@@ -53,6 +54,8 @@ export default class GentleForm {
         });
 
         $('[data-errors-when]', $form).hide();
+
+        this.refreshAria();
     }
 
     validate ($elements) {
@@ -77,5 +80,47 @@ export default class GentleForm {
                 }
             });
         });
+
+        return this;
+    }
+
+    refreshAria () {
+        let $element;
+        $('[required], [aria-required]', this.$form).each(element => {
+            $element = $(element);
+
+            if ($element.prop('required')) $element.aria('required', true);
+            else $element.removeAttr('aria-required');
+        });
+
+        $('[data-errors-for]', this.$form).each(element => {
+            $element = $(element);
+
+            $element
+                .attr('role', 'alert')
+                .aria('live', 'assertive')
+                .aria('atomic', true)
+            ;
+
+            let name = $element.attr('data-errors-for');
+            let $relatedInput = $(`[name="${name}"]`, this.$form);
+
+            if ($relatedInput.length()) {
+                let id = $element.attr('id');
+                if (typeof id != 'string' || !id.length) {
+                    id = `gentle_${globalIds++}`;
+                    $element.attr('id', id);
+                }
+
+                let describedby = $relatedInput.aria('describedby');
+                if (typeof describedby != 'string') describedby = '';
+
+                describedby = describedby.split(' ');
+                if (describedby.indexOf(id) < 0) describedby.push(id);
+                $relatedInput.aria('describedby', describedby.join(' ').trim());
+            }
+        });
+
+        return this;
     }
 }

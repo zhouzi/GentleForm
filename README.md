@@ -166,7 +166,31 @@ To avoid duplicating the same error messages for every form elements, you can us
 
 ### ARIA Support
 
-GentleForm currently support those aria attributes:
+Those attributes are updated live:
 
 * `aria-hidden`: added and set to true along with the `is-hidden` class.
 * `aria-invalid`: added and set to true to invalid elements.
+
+While those ones are added on GentleForm's instantiation:
+
+* `aria-required`: added and set to true to required inputs.
+* `role=alert live=assertive atomic=true`: added to error messages (`[data-errors-for]`).
+* `aria-describedby`: added to inputs that have related error messages (support multiple references).
+
+It means that you'll probably want to refresh aria attributes when adding/removing elements or changing an input's required attribute.
+Here is an example of how you could do that:
+
+```html
+<form>
+    <input type="text" required>
+</form>
+
+<script>
+    var form = new GentleForm('form');
+
+    setTimeout(function () {
+        document.querySelector('form').innerHTML += '<input type="email" required>';
+        form.refreshAria();
+    }, 1000);
+</script>
+```
