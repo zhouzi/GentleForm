@@ -10,7 +10,7 @@ Form validation, the right way.
 ## Features
 
 * Lightweight, no dependencies.
-* Use and polyfill HTML5 form validation api
+* Based on the HTML5 form validation api (with polyfills).
 * Display error messages and validate inputs when it makes sense from an user perspective.
 * Improve forms' accessibility by adding the relevant aria attributes.
 * Supports "cached" templates to avoid duplicating error messages.
