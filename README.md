@@ -1,6 +1,6 @@
 # GentleForm
 
-Form validation, the right way.
+HTML5 accessible and user-friendly form validation.
 
 * [Demo on CodePen](http://codepen.io/Zhouzi/full/QbBzZp/)
 * [Features](https://github.com/Zhouzi/GentleForm#features)
@@ -135,8 +135,9 @@ So now, every classes that are added to the firstname's input will be added to t
 ```
 
 As you can see, the `data-errors-for` attribute acts a bit like a switch statement.
-You first need to declare what input it is related.
-Then you can add messages for each of the form element's [validityState](https://developer.mozilla.org/fr/docs/Web/API/ValidityState) properties, listed below.
+The first thing is to declare what input it is related to by referencing it via its name (e.g `data-errors-for="firstname"`).
+Then, within this element, you can add error messages to display when one of the form element's [validityState](https://developer.mozilla.org/fr/docs/Web/API/ValidityState) object property is set to true (e.g `data-errors-when="valueMissing"`).
+Here is the supported constraints:
 
 * `badInput` indicates if the user has provided input that the browser is unable to convert.
 * `customError` indicates if the element's custom validity message has been set to a non-empty string by calling the element's `setCustomValidity()` method.
@@ -150,8 +151,8 @@ Then you can add messages for each of the form element's [validityState](https:/
 * `valid ` indicates if the element meets all constraint validations, and is therefore considered to be valid.
 * `valueMissing ` indicates if the element has a required attribute, but no value (e.g `<input required>`).
 
-The `validityState` object and `checkValidity()` method are not fully supported, even by modern browsers.
-To ensure a consistent behavior, GentleForm internally uses [flooz](https://github.com/Zhouzi/flooz) which has "polyfills" for those features.
+Actually the HTML5 form validation api is not fully supported, even by modern browsers.
+But don't worry, GentleForm internally uses [flooz](https://github.com/Zhouzi/flooz) to manipulate the DOM and it has polyfills for those features.
 
 ### Caching Templates
 

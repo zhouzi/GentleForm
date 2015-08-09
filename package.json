@@ -1,7 +1,7 @@
 {
   "name": "GentleForm",
-  "version": "0.0.0",
-  "description": "Form validation, the right way.",
+  "version": "1.0.0",
+  "description": "HTML5 accessible and user-friendly form validation.",
   "author": "Gabin Aureche",
   "license": "MIT",
   "devDependencies": {
