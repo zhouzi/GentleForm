@@ -1,6 +1,6 @@
 # GentleForm
 
-HTML5 accessible and user-friendly form validation.
+Accessible and user-friendly HTML5 form validation library.
 
 * [Demo on CodePen](http://codepen.io/Zhouzi/full/QbBzZp/)
 * [Features](https://github.com/Zhouzi/GentleForm#features)

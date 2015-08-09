@@ -1,7 +1,7 @@
 {
   "name": "GentleForm",
   "main": "dist/GentleForm.min.js",
-  "description": "HTML5 accessible and user-friendly form validation.",
+  "description": "Accessible and user-friendly HTML5 form validation library.",
   "homepage": "https://github.com/Zhouzi/GentleForm",
   "authors": [
     "Gabin Aureche <hello@gabinaureche.com>"
