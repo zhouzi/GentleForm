@@ -17,6 +17,6 @@
     "src"
   ],
   "devDependencies": {
-    "flooz": "~0.0.7"
+    "flooz": "~0.0.11"
   }
 }

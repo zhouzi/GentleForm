@@ -36,7 +36,28 @@ export default class GentleForm {
                     $child.setState('submitted', true, $form);
                     this.validate($child);
 
-                    data[$child.attr('name')] = { validity: child.validity, value: $child.val() };
+                    let name = $child.attr('name');
+                    if (name in data) return;
+
+                    let value = null;
+
+                    let type = $child.attr('type');
+                    if (type) type = type.toLowerCase();
+
+                    if (type == 'radio') {
+                        let $radios = $(`[name="${name}]"`, $form);
+                        let $element;
+                        $radios.each(element => {
+                            $element = $(element);
+                            if ($element.checked()) value = $element.val();
+                        });
+                    } else if (type == 'checkbox') {
+                        value = $child.checked();
+                    } else {
+                        value = $child.val();
+                    }
+
+                    data[name] = { validity: child.validity, value: value };
                 });
 
                 this.validate($form);
