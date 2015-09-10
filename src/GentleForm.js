@@ -27,28 +27,28 @@ export default class GentleForm {
                 let children     = formValidity.children;
                 let data         = {};
 
-                let $child;
                 children.forEach(child => {
-                    $child = $(child.element);
+                    let $child = $(child.element);
+                    let type   = $child.attr('type');
+                    let name   = $child.attr('name');
 
-                    if (utils.isButton($child)) return;
+                    if (!name ||
+                        $child.prop('tagName') == 'fieldset' ||
+                        $child.prop('disabled') ||
+                        type == 'reset' ||
+                        type == 'submit' ||
+                        type == 'button' ||
+                        type == 'file' ||
+                        name in data) return;
 
                     $child.setState('submitted', true, $form);
                     this.validate($child);
 
-                    let name = $child.attr('name');
-                    if (name in data) return;
-
                     let value = null;
 
-                    let type = $child.attr('type');
-                    if (type) type = type.toLowerCase();
-
                     if (type == 'radio') {
-                        let $radios = $(`[name="${name}]"`, $form);
-                        let $element;
-                        $radios.each(element => {
-                            $element = $(element);
+                        $(`[name="${name}]"`, $form).each(element => {
+                            let $element = $(element);
                             if ($element.checked()) value = $element.val();
                         });
                     } else if (type == 'checkbox') {
