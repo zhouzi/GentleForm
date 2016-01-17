@@ -1,19 +1,30 @@
 {
   "name": "GentleForm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Accessible and user-friendly HTML5 form validation library.",
   "author": "Gabin Aureche",
   "license": "MIT",
+  "scripts": {
+    "lint": "standard",
+    "build": "webpack && webpack -d -p",
+    "dev": "webpack --progress --colors --watch"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ]
+  },
   "devDependencies": {
-    "babel-core": "^5.7.4",
-    "babel-loader": "^5.3.2",
-    "gulp": "^3.9.0",
-    "gulp-header": "^1.2.2",
-    "gulp-load-plugins": "^1.0.0-rc.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-webpack": "^1.5.0",
-    "node-libs-browser": "^0.5.2",
-    "webpack": "^1.10.1"
+    "babel-core": "6.4.0",
+    "babel-loader": "6.2.1",
+    "standard": "5.4.1",
+    "webpack": "1.12.11",
+    "yargs": "3.32.0"
   },
   "repository": {
     "type": "git",

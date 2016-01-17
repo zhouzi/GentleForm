@@ -10,13 +10,8 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "gulpfile.js",
     "package.json",
     "webpack.config.js",
     "src"
-  ],
-  "devDependencies": {
-    "flooz": "~0.0.11"
-  }
+  ]
 }
