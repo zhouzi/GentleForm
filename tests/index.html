@@ -1,0 +1,26 @@
+<form id="form" novalidate>
+  <input type="text" name="firstname" value="Marc" required>
+  <div data-errors-for="firstname" data-include="form-errors"></div>
+  <div data-states-for="firstname">this is a states for element</div>
+  <button type="submit">submit</button>
+</form>
+
+<script id="form-errors" type="text/gentle-template">
+  <div data-errors-when="valueMissing">This field is required.</div>
+</script>
+
+<style>
+  .is-changed { outline: 2px solid yellow; }
+  .is-submitted { outline: 2px solid orange; }
+  .is-valid { outline: 1px solid green; }
+  .is-invalid { outline: 1px solid red; }
+</style>
+
+<script src="../dist/GentleForm.js"></script>
+<script>
+  var element = document.getElementById('form')
+  var form = GentleForm(element, function (event) {
+    event.preventDefault()
+    console.log(arguments, this)
+  })
+</script>
