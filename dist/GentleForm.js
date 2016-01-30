@@ -216,7 +216,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      var name = element.getAttribute('data-errors-for');
-	      var targetInput = $$('[name="' + name + '"]', form)[0];
+	      var targetInput = form.getAttribute('name') === name ? form : $$('[name="' + name + '"]', form)[0];
 	      var describedby = targetInput.getAttribute('aria-describedby') || '';
 	      var describers = describedby.split(' ');
 

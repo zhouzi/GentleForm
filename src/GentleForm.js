@@ -134,7 +134,7 @@ function GentleForm (form, onSubmitCallback = function () {}) {
       }
 
       const name = element.getAttribute('data-errors-for')
-      const targetInput = $$(`[name="${name}"]`, form)[0]
+      const targetInput = form.getAttribute('name') === name ? form : $$(`[name="${name}"]`, form)[0]
       const describedby = targetInput.getAttribute('aria-describedby') || ''
       const describers = describedby.split(' ')
 
