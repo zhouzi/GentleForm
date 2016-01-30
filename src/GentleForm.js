@@ -8,7 +8,6 @@ function GentleForm (form, onSubmitCallback = function () {}) {
   \**************************************/
 
   const props = {
-    onSubmit,
     updateMessages,
     updateIncludes,
     refreshAria,

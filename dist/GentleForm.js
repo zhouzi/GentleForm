@@ -77,7 +77,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  \**************************************/
 
 	  var props = {
-	    onSubmit: onSubmit,
 	    updateMessages: updateMessages,
 	    updateIncludes: updateIncludes,
 	    refreshAria: refreshAria,
