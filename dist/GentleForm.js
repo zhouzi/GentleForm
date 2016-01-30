@@ -137,9 +137,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function validate(element) {
 	    if (element.checkValidity()) {
+	      element.removeAttribute('aria-invalid');
 	      setState(element, 'valid', true);
 	      setState(element, 'invalid', false);
 	    } else {
+	      element.setAttribute('aria-invalid', 'true');
 	      setState(element, 'valid', false);
 	      setState(element, 'invalid', true);
 	    }
