@@ -4,6 +4,13 @@
   "description": "Accessible and user-friendly HTML5 form validation library.",
   "author": "Gabin Aureche",
   "license": "MIT",
+  "main": "dist/GentleForm.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "lint": "standard",
     "build": "webpack && webpack -d -p",
