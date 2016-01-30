@@ -26,6 +26,7 @@ Accessible and user-friendly HTML5 form validation library.
 1. Get GentleForm
     * direct download: [GentleForm.js](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.js)
     * via bower: `bower install gentleform`
+    * via npm: `npm install gentleform`
 2. Include it: `<script src="path/to/GentleForm.js"></script>`
 3. Add the desired styles (see basic example below)
 4. Create a new GentleForm object (see basic example below)
