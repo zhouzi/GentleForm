@@ -21,6 +21,7 @@ function GentleForm (form, onSubmitCallback = function () {}) {
 
   function onSubmit (...args) {
     setState(form, 'submitted', true)
+    validate(form)
     getFormChildren(form).forEach(validate)
     onSubmitCallback.apply(props, args)
   }

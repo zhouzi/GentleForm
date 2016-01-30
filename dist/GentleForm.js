@@ -1,5 +1,5 @@
 /*!
- * GentleForm - v1.0.1
+ * GentleForm - v2.0.0
  * Accessible and user-friendly HTML5 form validation library.
  * https://github.com/Zhouzi/GentleForm
  *
@@ -90,6 +90,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function onSubmit() {
 	    setState(form, 'submitted', true);
+	    validate(form);
 	    getFormChildren(form).forEach(validate);
 
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
