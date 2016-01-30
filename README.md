@@ -24,7 +24,7 @@ Accessible and user-friendly HTML5 form validation library.
 ## Usage
 
 1. Get GentleForm
-    * direct download: [GentleForm.min.js](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.js)
+    * direct download: [GentleForm.js](https://raw.githubusercontent.com/Zhouzi/GentleForm/gh-pages/dist/GentleForm.js)
     * via bower: `bower install gentleform`
 2. Include it: `<script src="path/to/GentleForm.js"></script>`
 3. Add the desired styles (see basic example below)
@@ -79,7 +79,7 @@ Accessible and user-friendly HTML5 form validation library.
 </form>
 
 <script src="path/to/GentleForm.min.js"></script>
-<script>new GentleForm(document.querySelector('form'), function (event) {});</script>
+<script>GentleForm(document.querySelector('form'), function (event) {});</script>
 ```
 
 The first argument passed to GentleForm is a form element.
@@ -122,8 +122,6 @@ The first thing is to declare what input it is related to by referencing it via 
 Then, within this element, you can add error messages to display when one of the form element's [validityState](https://developer.mozilla.org/fr/docs/Web/API/ValidityState) object property is set to true (e.g `data-errors-when="valueMissing"`).
 Here is the supported constraints:
 
-* `badInput` indicates if the user has provided input that the browser is unable to convert.
-* `customError` indicates if the element's custom validity message has been set to a non-empty string by calling the element's `setCustomValidity()` method.
 * `patternMismatch` indicates if the value does not match the specified pattern (e.g `<input pattern="[a-z]">`).
 * `rangeOverflow` indicates if the value is greater than the maximum specified by the max attribute (e.g `<input max="5">`).
 * `rangeUnderflow` indicates if the value is less than the minimum specified by the min attribute (e.g `<input min="5">`).
@@ -133,7 +131,7 @@ Here is the supported constraints:
 * `valid ` indicates if the element meets all constraint validations, and is therefore considered to be valid.
 * `valueMissing ` indicates if the element has a required attribute, but no value (e.g `<input required>`).
 
-GentleForm is distributed with an html5validation shim to bring support for the HTML5 validation api in older browsers.
+GentleForm is distributed with an [html5validation](https://github.com/Zhouzi/html5validation) shim to bring support for the HTML5 validation api in older browsers.
 
 ### Reusing Messages
 
@@ -174,7 +172,7 @@ Here is an example of how you could do that:
 </form>
 
 <script>
-    var form = new GentleForm('form');
+    var form = GentleForm(document.querySelector('form'));
 
     setTimeout(function () {
         document.querySelector('form').innerHTML += '<input type="email" required>';
