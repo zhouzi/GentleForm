@@ -22,17 +22,17 @@ function GentleForm (form, onSubmitCallback = function () {}) {
   function onSubmit (...args) {
     setState(form, 'submitted', true)
     validate(form)
-    getFormChildren(form).forEach(validate)
+    getFormChildren().forEach(validate)
     onSubmitCallback.apply(props, args)
   }
 
   function updateMessages () {
-    getFormChildren(form).forEach(updateMessagesFor)
+    getFormChildren().forEach(updateMessagesFor)
   }
 
   function setState (target, state, value) {
     const name = target.getAttribute('name')
-    const statesForElements = $$(`[data-states-for="${name}"]`, form)
+    const statesForElements = $$(`[data-states-for="${name}"]`)
     const elements = [target].concat(statesForElements)
     const className = `is-${state}`
 
@@ -45,19 +45,19 @@ function GentleForm (form, onSubmitCallback = function () {}) {
     return element.classList.contains(className)
   }
 
-  function $$ (selector, parent = document) {
-    return [].slice.call(parent.querySelectorAll(selector))
+  function $$ (selector) {
+    return [].slice.call(form.querySelectorAll(selector))
   }
 
-  function getFormChildren (form) {
-    return $$('input', form)
+  function getFormChildren () {
+    return $$('input')
       .filter(function (child) {
         const type = child.getAttribute('name')
         const notValidableElements = ['button', 'submit', 'reset', 'file']
 
         return notValidableElements.indexOf(type) === -1
       })
-      .concat($$('textarea, select', form))
+      .concat($$('textarea, select'))
   }
 
   function validate (element) {
@@ -93,21 +93,26 @@ function GentleForm (form, onSubmitCallback = function () {}) {
       const messages = $$(`[data-errors-for="${name}"] [data-errors-when="${key}"]`)
 
       messages.forEach(function (message) {
-        if (isValid) {
-          message.style.display = 'none'
-          message.setAttribute('aria-hidden', 'true')
-        } else {
-          message.style.display = ''
-          message.removeAttribute('aria-hidden')
-        }
+        if (isValid) hide(message)
+        else show(message)
       })
     }
+  }
+
+  function show (element) {
+    element.style.display = ''
+    element.removeAttribute('aria-hidden')
+  }
+
+  function hide (element) {
+    element.style.display = 'none'
+    element.setAttribute('aria-hidden', 'true')
   }
 
   const includesCache = {}
 
   function updateIncludes () {
-    $$('[data-include]', form).forEach(function (element) {
+    $$('[data-include]').forEach(function (element) {
       const id = element.getAttribute('data-include')
       if (includesCache[id] == null) includesCache[id] = document.getElementById(id).innerHTML
       element.innerHTML = includesCache[id]
@@ -115,12 +120,12 @@ function GentleForm (form, onSubmitCallback = function () {}) {
   }
 
   function refreshAria () {
-    $$('[required], [aria-required]', form).forEach(function (element) {
+    $$('[required], [aria-required]').forEach(function (element) {
       if (element.hasAttribute('required')) element.setAttribute('aria-required', 'true')
       else element.removeAttribute('aria-required')
     })
 
-    $$('[data-errors-for]', form).forEach(function (element) {
+    $$('[data-errors-for]').forEach(function (element) {
       element.setAttribute('role', 'alert')
       element.setAttribute('aria-live', 'assertive')
       element.setAttribute('aria-atomic', 'true')
@@ -134,7 +139,7 @@ function GentleForm (form, onSubmitCallback = function () {}) {
       }
 
       const name = element.getAttribute('data-errors-for')
-      const targetInput = $$(`[name="${name}"]`, form)[0]
+      const targetInput = $$(`[name="${name}"]`)[0]
       const describedby = targetInput.getAttribute('aria-describedby') || ''
       const describers = describedby.split(' ')
 
@@ -154,16 +159,16 @@ function GentleForm (form, onSubmitCallback = function () {}) {
 
     setState(target, 'changed', true)
     validate(target)
-  })
+  }, false)
 
   form.addEventListener('input', function (event) {
     const target = event.target
 
     if (hasState(target, 'changed') || hasState(form, 'submitted')) validate(target)
-  })
+  }, false)
 
   updateIncludes()
-  updateMessages()
+  $$('[data-errors-when]').forEach(hide)
   refreshAria()
 
   return props

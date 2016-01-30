@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function onSubmit() {
 	    setState(form, 'submitted', true);
 	    validate(form);
-	    getFormChildren(form).forEach(validate);
+	    getFormChildren().forEach(validate);
 
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
@@ -101,12 +101,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function updateMessages() {
-	    getFormChildren(form).forEach(updateMessagesFor);
+	    getFormChildren().forEach(updateMessagesFor);
 	  }
 
 	  function setState(target, state, value) {
 	    var name = target.getAttribute('name');
-	    var statesForElements = $$('[data-states-for="' + name + '"]', form);
+	    var statesForElements = $$('[data-states-for="' + name + '"]');
 	    var elements = [target].concat(statesForElements);
 	    var className = 'is-' + state;
 
@@ -123,18 +123,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function $$(selector) {
-	    var parent = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
-
-	    return [].slice.call(parent.querySelectorAll(selector));
+	    return [].slice.call(form.querySelectorAll(selector));
 	  }
 
-	  function getFormChildren(form) {
-	    return $$('input', form).filter(function (child) {
+	  function getFormChildren() {
+	    return $$('input').filter(function (child) {
 	      var type = child.getAttribute('name');
 	      var notValidableElements = ['button', 'submit', 'reset', 'file'];
 
 	      return notValidableElements.indexOf(type) === -1;
-	    }).concat($$('textarea, select', form));
+	    }).concat($$('textarea, select'));
 	  }
 
 	  function validate(element) {
@@ -170,13 +168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var messages = $$('[data-errors-for="' + name + '"] [data-errors-when="' + key + '"]');
 
 	      messages.forEach(function (message) {
-	        if (isValid) {
-	          message.style.display = 'none';
-	          message.setAttribute('aria-hidden', 'true');
-	        } else {
-	          message.style.display = '';
-	          message.removeAttribute('aria-hidden');
-	        }
+	        if (isValid) hide(message);else show(message);
 	      });
 	    };
 
@@ -187,10 +179,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	  function show(element) {
+	    element.style.display = '';
+	    element.removeAttribute('aria-hidden');
+	  }
+
+	  function hide(element) {
+	    element.style.display = 'none';
+	    element.setAttribute('aria-hidden', 'true');
+	  }
+
 	  var includesCache = {};
 
 	  function updateIncludes() {
-	    $$('[data-include]', form).forEach(function (element) {
+	    $$('[data-include]').forEach(function (element) {
 	      var id = element.getAttribute('data-include');
 	      if (includesCache[id] == null) includesCache[id] = document.getElementById(id).innerHTML;
 	      element.innerHTML = includesCache[id];
@@ -198,11 +200,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function refreshAria() {
-	    $$('[required], [aria-required]', form).forEach(function (element) {
+	    $$('[required], [aria-required]').forEach(function (element) {
 	      if (element.hasAttribute('required')) element.setAttribute('aria-required', 'true');else element.removeAttribute('aria-required');
 	    });
 
-	    $$('[data-errors-for]', form).forEach(function (element) {
+	    $$('[data-errors-for]').forEach(function (element) {
 	      element.setAttribute('role', 'alert');
 	      element.setAttribute('aria-live', 'assertive');
 	      element.setAttribute('aria-atomic', 'true');
@@ -216,7 +218,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      var name = element.getAttribute('data-errors-for');
-	      var targetInput = $$('[name="' + name + '"]', form)[0];
+	      var targetInput = $$('[name="' + name + '"]')[0];
 	      var describedby = targetInput.getAttribute('aria-describedby') || '';
 	      var describers = describedby.split(' ');
 
@@ -236,16 +238,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    setState(target, 'changed', true);
 	    validate(target);
-	  });
+	  }, false);
 
 	  form.addEventListener('input', function (event) {
 	    var target = event.target;
 
 	    if (hasState(target, 'changed') || hasState(form, 'submitted')) validate(target);
-	  });
+	  }, false);
 
 	  updateIncludes();
-	  updateMessages();
+	  $$('[data-errors-when]').forEach(hide);
 	  refreshAria();
 
 	  return props;
