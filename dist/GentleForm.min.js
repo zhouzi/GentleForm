@@ -1,5 +1,5 @@
 /*!
- * gentleform - v2.0.0
+ * gentleform - v2.0.1
  * Accessible and user-friendly HTML5 form validation library.
  * https://github.com/Zhouzi/GentleForm
  *
