@@ -4,6 +4,7 @@ Accessible and user-friendly HTML5 form validation library.
 
 * [Demo on CodePen](http://codepen.io/Zhouzi/full/QbBzZp/)
 * [Features](https://github.com/Zhouzi/GentleForm#features)
+* [Browser Support](https://github.com/Zhouzi/GentleForm#browser-support)
 * [Usage](https://github.com/Zhouzi/GentleForm#usage)
 * [Documentation](https://github.com/Zhouzi/GentleForm#documentation)
     * [Instantiation And Form Submission](https://github.com/Zhouzi/GentleForm#instantiation-and-form-submission)
@@ -20,6 +21,15 @@ Accessible and user-friendly HTML5 form validation library.
 * Display error messages and validate inputs when it makes sense from an user perspective.
 * Improve forms' accessibility by adding the relevant aria attributes.
 * Prevent code duplication by reusing feedback messages.
+
+## Browser Support
+
+After some manual testing, GentleForm proved to be working on IE10+.
+Please note that I won't recommend using GentleForm in older browsers.
+That been said, bringing support for IE9 should be as simple as adding an `element.classList` polyfill, here a two you can choose from:
+
+* [Cross-browser JavaScript shim that fully implements element.classList](https://github.com/eligrey/classList.js)
+* [Minimal classList shim for IE 9](https://gist.github.com/devongovett/1381839)
 
 ## Usage
 
