@@ -155,7 +155,7 @@ To avoid duplicating the same error messages for every form elements, you can us
 <input type="text" name="lastname" required>
 <div data-errors-for="lastname" data-include="form-errors"></div>
 
-<script type="text/gentle-template">
+<script type="text/gentle-template" id="form-errors">
     <div data-errors-when="valueMissing">This field is required.</div>
 </script>
 ```
